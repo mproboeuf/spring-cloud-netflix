@@ -138,7 +138,7 @@ public class EurekaClientAutoConfiguration {
 		boolean isSecurePortEnabled = Boolean.parseBoolean(getProperty("eureka.instance.secure-port-enabled"));
 
 		String serverContextPath = env.getProperty("server.context-path", "/");
-		int serverPort = Integer.valueOf(env.getProperty("server.port", env.getProperty("port", "8080")));
+		int serverPort = Integer.valueOf(env.getProperty("eureka.instance.nonSecurePort", env.getProperty("server.port", env.getProperty("port", "8080"))));
 
 		Integer managementPort = env.getProperty("management.server.port", Integer.class);// nullable. should be wrapped into optional
 		String managementContextPath = env.getProperty("management.server.servlet.context-path");// nullable. should be wrapped into optional
@@ -154,7 +154,7 @@ public class EurekaClientAutoConfiguration {
 		}
 
 		if(isSecurePortEnabled) {
-			instance.setSecurePort(serverPort);
+			instance.setSecurePort(Integer.valueOf(env.getProperty("eureka.instance.securePort", String.valueOf(serverPort))));
 		}
 
 		if (StringUtils.hasText(hostname)) {
